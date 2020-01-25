@@ -1,6 +1,6 @@
-# Lenses
+# 3 - Lenses
 
-## Optic anatomy
+## 1. Optic anatomy
 
 For each expression, identify the action, path, structure and focus.
 
@@ -28,11 +28,11 @@ For each expression, identify the action, path, structure and focus.
   - __structure:__ `(["super", "cali"], ["fragilistic", "expialidocious"])`
   - __focus:__ `"super", "cali", "fragilistic", "expialidocious"`
 
-## Lens Actions
+## 2. Lens Actions
 
-1. Name the structure and focus of this lens: `Lens' (Bool, (Int, String)) Int`
+1. Name the structure and focus of this lens: `Lens' (Bool, (Int, String)) Int`.
 
-2. Write a (simplified) type signature of a Lens with structure `(Char, Int)` and focus `Char`
+2. Write a (simplified) type signature of a Lens with structure `(Char, Int)` and focus `Char`.
 
 3. Name three actions we can use on a Lens.
 
