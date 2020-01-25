@@ -60,3 +60,30 @@ For each expression, identify the action, path, structure and focus.
     ```
     __Result:__ `(False,20)`
 
+## 3. Lenses and Records
+
+### Records part 1
+
+1. What letters are used to denote the structure and focus of a lens, respectively?
+  - __structure:__ `s`
+  - __focus:__ `a`
+
+2. Which two components are required to create a lens?
+    getter `(s -> a)` and setter `(s -> a -> s)` methods
+
+3. Given the following record, 
+
+    ```haskell
+        data Ship = Ship { _name :: String, _numCrew :: Int }
+    ```
+
+    implement a lens for the `_name` field.
+
+    ```haskell
+        name :: Lens' Ship String
+        name = lens _name (\s n -> s { _name = n })
+    ```
+
+
+
+
