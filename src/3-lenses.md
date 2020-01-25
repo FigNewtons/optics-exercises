@@ -69,6 +69,7 @@ For each expression, identify the action, path, structure and focus.
   - __focus:__ `a`
 
 2. Which two components are required to create a lens?
+
     getter `(s -> a)` and setter `(s -> a -> s)` methods
 
 3. Given the following record, 
