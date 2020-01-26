@@ -85,6 +85,90 @@ For each expression, identify the action, path, structure and focus.
         name = lens _name (\s n -> s { _name = n })
     ```
 
+### Record part 2
 
 
+## 4. Limitations
+
+For each type signature, give a valid lens definition (if possible)!
+If not, explain why. Can you impose additional constraints to make a (potentially law-less) definition? 
+
+1. `second :: Lens' (a,b,c) b`
+
+    `second = _2`
+
+2. `inMaybe :: Lens' (Maybe a) a`
+
+    No, there's no way to retrieve an `a` out of `Nothing`. But suppose we had this instead:
+
+    ```haskell
+    inMaybe :: Monoid a => Lens' (Maybe a) a
+    inMaybe = lens getMaybe setMaybe
+        where getMaybe (Just a) = a
+              getMaybe Nothing = mempty
+              setMaybe (Just _) a = Just a
+              setMaybe Nothing _ = Nothing
+    ```
+
+    We basically swap `Nothing` with unchangable `mempty`.
+    However, note that this definition does not satisfy `view inMaybe (set inMaybe a m) == a` 
+
+3. `left :: Lens' (Either a b) a`
+
+    In the general case, no since we can't retrieve an `a` from `Right b`.
+    However, if we have `Either a a`, then we can define the following:
+
+    ```haskell
+    chosen :: Lens' (Either a a) a
+    chosen = lens getEither setEither
+        where getEither (Left a) = a
+              getEither (Right a) = a
+              setEither (Left _) a = Left a
+              setEither (Right _) a = Right a
+    ```
+
+4. `listThird :: Lens' [a] a`
+
+    No, same issue as `Maybe`...can't retrieve `a` from `[]`. 
+    Suppose we had this instead:
+
+    ```haskell
+        data NonEmpty a = a :| [a]
+
+        listFirst :: Lens' (NonEmpty a) a
+        listFirst = lens getFirst setFirst
+            where getFirst (a :| _) = a
+                  setFirst (_ :| as) a = a :| as
+    ```
+
+    Clearly, this works because we're guaranteed at least one element.
+
+5. `condtional :: Lens` (Bool, a, a) a` where the focus is based on the `Bool` value
+
+    ```haskell
+    conditional = lens getCond setCond
+        where getCond (True, a, _) = a
+              getCond (False, _, a) = a
+              setCond (True _, a) a' = (True, a', a)
+              setCond (False, a, _) a' = (False, a, a')
+    ```
+
+6. `msg :: Lens' Err String` where `data Err = Exception { _msg :: String } | ExitCode { _code :: Int }`
+
+    Clearly, the tricky part is dealing with `ExitCode`. 
+
+    You might be tempted to convert `_code` to a `String`. This fulfills the get, but since
+    not every `String` represents a valid `Int`, this does not work.
+
+    The other option is to apply our `Monoid` trick, where `mempty = ""`. But what if we
+    had some non-monoidal type instead of `String`? Well, if the type contains at least one
+    value, we can use that.
+
+    ```haskell
+    msg = lens getMsg setMsg
+        where getMsg (Exception m) = m
+              getMsg (ExitCode _) = ""
+              setMsg (Exception _) m = Exception m
+              setMsg (ExitCode c) _ = ExitCode c
+    ```
 
