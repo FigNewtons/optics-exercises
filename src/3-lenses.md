@@ -95,7 +95,9 @@ If not, explain why. Can you impose additional constraints to make a (potentiall
 
 1. `second :: Lens' (a,b,c) b`
 
-    `second = _2`
+    ```haskell
+    second = _2
+    ```
 
 2. `inMaybe :: Lens' (Maybe a) a`
 
@@ -143,7 +145,7 @@ If not, explain why. Can you impose additional constraints to make a (potentiall
 
     Clearly, this works because we're guaranteed at least one element.
 
-5. `condtional :: Lens` (Bool, a, a) a` where the focus is based on the `Bool` value
+5. `condtional :: Lens' (Bool, a, a) a` where the focus is based on the `Bool` value
 
     ```haskell
     conditional = lens getCond setCond
@@ -171,4 +173,7 @@ If not, explain why. Can you impose additional constraints to make a (potentiall
               setMsg (Exception _) m = Exception m
               setMsg (ExitCode c) _ = ExitCode c
     ```
+    
+    We could also combine the two approached together, though I'm not sure what that buys you.
+
 
