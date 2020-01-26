@@ -174,6 +174,6 @@ If not, explain why. Can you impose additional constraints to make a (potentiall
               setMsg (ExitCode c) _ = ExitCode c
     ```
     
-    We could also combine the two approached together, though I'm not sure what that buys you.
+    We could also combine the two approaches together, though I'm not sure what that buys you.
 
 
